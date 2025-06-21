@@ -17,4 +17,9 @@ class Venue extends Model
         'capacity',
         'price'
     ];
+
+    public function service()
+    {
+        return $this->hasOne(Service::class, 'venue_id', 'venue_id');
+    }
 }

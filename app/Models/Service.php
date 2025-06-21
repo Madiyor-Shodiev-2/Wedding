@@ -17,4 +17,12 @@ class Service extends Model
         'venue_id',
         'telephone'
     ];
+
+    public function image() {
+        return $this->belongsTo(Image::class, 'image_id', 'id');
+    }
+
+    public function venue() {
+        return $this->belongsTo(Venue::class, 'venue_id', 'venue_id');
+    }
 }

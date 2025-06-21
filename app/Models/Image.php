@@ -17,4 +17,11 @@ class Image extends Model
         'path'
     ];
 
+    public function books() {
+        return $this->hasMany(Book::class, 'image_id', 'id');
+    }
+
+    public function services() {
+        return $this->hasMany(Service::class, 'image_id', 'id');
+    }
 }
