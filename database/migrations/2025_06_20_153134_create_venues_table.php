@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('venue_name');
             $table->string('address');
             $table->integer('capacity');
+            $table->integer('price');
             $table->timestamps();
         });
     }
