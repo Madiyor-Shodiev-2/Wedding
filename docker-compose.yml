@@ -26,10 +26,10 @@ services:
     depends_on:
       - wedding_app
     ports:
-      - "8181:80"
+      - "8085:80"
     volumes:
-      - /home/madiyor/Telegram:/var/www/html
-      - /home/madiyor/Telegram/docker/conf.d:/etc/nginx/conf.d
+      - .:/var/www/html
+      - ./docker/conf.d:/etc/nginx/conf.d
     networks:
       - wedding-network
   

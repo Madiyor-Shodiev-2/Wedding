@@ -16,10 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->integer('price');
             $table->enum('type', [
-                'Music',
-                'Animator',
-                'Organizator',
-                'Artist',
+                'Karnay-surnay',
+                'To’yxona',
+                'Choyxona',
+                'Bezatish',
+                'Artistlar',
+                'Osh',
+                'Foto-video',
+                'Kortej',
+                'Uy ta’mirlash'
             ]);
             $table->text('description')->nullable();
             $table->foreignId('image_id')->constrained('images')->onDelete('cascade');

@@ -17,7 +17,6 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-RUN composer require twbs/bootstrap:5.3.7
 
 COPY . .
 
