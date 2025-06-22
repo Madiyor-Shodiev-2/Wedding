@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Book\CreateBookRequest;
+use App\Http\Requests\Book\UpdateBookRequest;
 use App\Http\Controllers\Controller;
 use App\Actions\BookActions;
-use Illuminate\Http\Request;
-use App\Models\Book;
 use Illuminate\Support\Arr;
+use App\Models\Book;
+use App\Services\BookService;
+
 class BookController extends Controller
 {
     
-    public function index()
+    public function index(BookService $bookService)
     {
-        $allBooks = Book::getAll(Book::query())->withImage()->get()->toArray();
-
-        $allBooks = BookActions::exceptInArray($allBooks);
+        $allBooks = $bookService->getAllBooksWithImages();
 
         return response()->json($allBooks, 200);
     }
@@ -30,9 +31,11 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateBookRequest $request, BookService $bookService)
     {
-        //
+        $book = $bookService->saveBookWithImage($request);
+
+        return response()->json($book, 201);
     }
 
     /**
@@ -40,9 +43,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        $book->load('image:id,path');
-        $book = Arr::except($book->toArray(), ['created_at', 'updated_at', 'image_id']);
-        // $book = $book->except(['created_at', 'updated_at']);
+        $book = BookActions::getExceptDataBook($book);
 
         return response()->json($book, 302);
     }
@@ -50,7 +51,7 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Book $book)
     {
         //
     }
@@ -58,16 +59,23 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBookRequest $request, Book $book)
     {
-        //
+        
+        $book->update($request->validated());
+
+        $book = BookActions::getExceptDataBook($book);
+
+        return response()->json($book, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return response()->json(['message' => 'Book deleted successfully'], 204);
     }
 }
