@@ -1,24 +1,30 @@
-FROM php:8.2-alpine
+FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
     libpng \
     libpng-dev \
     libzip-dev \
     oniguruma-dev \
+    postgresql-dev \
     zip \
     curl \
     git \
-    && docker-php-exit-install pdo pdo_mysql pdo_pgsql zip gd mbstring exif
+    autoconf \
+    g++ \
+    make \
+    && docker-php-ext-install intl pdo pdo_mysql pdo_pgsql zip gd mbstring exif pcntl \
+    && pecl install redis \
+    && docker-php-ext-enable redis
 
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-COPY composer.json composer.lock ./
+COPY ../composer.json ../composer.lock ./
+
+COPY .. .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-COPY . .
 
 RUN php artisan config:cache && \
     php artisan route:cache && \

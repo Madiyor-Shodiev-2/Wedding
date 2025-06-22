@@ -21,6 +21,9 @@
 /vendor
 .env.prod
 /docker/Dockerfile.dev
+/docker/Dockerfile
+/docker/conf.d/nginc.conf
+docker-compose.yml
 docker-compose.dev.yml
 Homestead.json
 Homestead.yaml
